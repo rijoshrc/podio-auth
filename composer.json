@@ -16,8 +16,12 @@
     }
   },
   "scripts": {
-    "post-install-cmd": [
-      "php artisan vendor:publish"
+    "post-update-cmd": [
+      "php artisan vendor:publish --tag=config --force",
+      "php artisan vendor:publish --tag=migrations --force",
+      "php artisan vendor:publish",
+      "php artisan migrate",
+      "php artisan optimize"
     ]
   }
 }
