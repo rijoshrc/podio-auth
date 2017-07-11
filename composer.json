@@ -1,5 +1,5 @@
 {
-  "name": "podio/auth",
+  "name": "rijosh/podio-auth",
   "description": "Podio authentication including rate-limit controlling",
   "type": "composer-plugin",
   "authors": [
