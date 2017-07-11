@@ -1,0 +1,24 @@
+{
+  "name": "podio/auth",
+  "description": "Podio authentication including rate-limit controlling",
+  "type": "composer-plugin",
+  "authors": [
+    {
+      "name": "Rijosh",
+      "email": "rr.phases@gmail.com"
+    }
+  ],
+  "minimum-stability": "dev",
+  "require": {
+    "laravel/framework": "^5.2",
+    "podio/podio-php": "^4.3"
+  },
+  "autoload": {
+    "classmap": [
+      "database"
+    ],
+    "psr-4": {
+      "PodioAuth\\": "packages/podio_auth/src"
+    }
+  }
+}
