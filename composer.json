@@ -12,15 +12,12 @@
   },
   "autoload": {
     "psr-4": {
-      "PodioAuth\\": "packages/podio_auth/src"
+      "PodioAuth\\": "src/"
     }
   },
   "scripts": {
     "post-update-cmd": [
-      "php artisan vendor:publish --tag=config --force",
-      "php artisan vendor:publish --tag=migrations --force",
       "php artisan vendor:publish",
-      "php artisan migrate",
       "php artisan optimize"
     ]
   }
