@@ -6,14 +6,12 @@
  * Time: 1:48 PM
  */
 
-namespace PodioAuth\Controllers;
+namespace App\Http\Controllers;
 
-use App\Http\Controllers\Controller;
+use App\Api;
+use App\AppAuth;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Log;
-use PodioAuth\Models\PodioApi;
-use PodioAuth\Models\PodioAppAuth;
-use PodioAuth\Repositories\Podio;
 
 class PodioAuth extends Controller
 {
@@ -23,21 +21,17 @@ class PodioAuth extends Controller
      */
     public static function podioUserAuth()
     {
-        try {
-            self::podioSetup();
-            $client = PodioApi::whereCurrent(1)->first();
-            if ($client->refresh_token) {
-                Log::info("AUTHENTICATE WITH REFRESH TOKEN: " . $client->id);
-                return \Podio::authenticate('refresh_token', array('refresh_token' => $client->refresh_token));
-            } else {
-                Log::info("RE AUTHENTICATE WITH PASSWORD");
-                $auth = \Podio::authenticate_with_password(Config::get('podio.username'), Config::get('podio.password'));
-                $client->refresh_token = \Podio::$oauth->refresh_token;
-                $client->save();
-                return $auth;
-            }
-        } catch (\Exception $exception) {
-            Log::info($exception);
+        self::podioSetup();
+        $client = Api::whereCurrent(1)->first();
+        if ($client->refresh_token) {
+            Log::info("AUTHENTICATE WITH REFRESH TOKEN: " . $client->id);
+            return \Podio::authenticate('refresh_token', array('refresh_token' => $client->refresh_token));
+        } else {
+            Log::info("RE AUTHENTICATE WITH PASSWORD");
+            $auth = \Podio::authenticate_with_password(Config::get('podio.username'), Config::get('podio.password'));
+            $client->refresh_token = \Podio::$oauth->refresh_token;
+            $client->save();
+            return $auth;
         }
     }
 
@@ -46,28 +40,26 @@ class PodioAuth extends Controller
      */
     public static function podioSetup()
     {
-        $client = PodioApi::whereCurrent(1)->first();
+        $client = Api::whereCurrent(1)->first();
         if (!$client) {
-            $c = PodioApi::first();
+            $c = Api::first();
             $c->current = 1;
             $c->save();
-            $client = PodioApi::whereCurrent(1)->first();
+            $client = Api::whereCurrent(1)->first();
         }
         \Podio::setup($client->client_id, $client->client_secret, array(
-            'session_manager' => 'PodioAuth\Controllers\PodioBrowserSession'
+            "session_manager" => "PodioBrowserSession"
         ));
     }
 
     /**
-     * App Authentication
-     * Authenticate with app name specified in Podio.php
      * Get app config from DB and authenticate.
      * @param $name - App name
      * @return bool
      */
     public static function podioAppAuthWithName($name)
     {
-        $app = PodioAppAuth::whereAppName($name)->first();
+        $app = AppAuth::whereAppName($name)->first();
         if ($app) {
             self::podioSetup();
             return \Podio::authenticate_with_app($app->app_id, $app->app_secret);
@@ -75,14 +67,13 @@ class PodioAuth extends Controller
     }
 
     /**
-     * App Authentication
-     * Authenticate using app id
+     * App auth using id
      * @param $app_id
      * @return bool
      */
     public static function podioAppAuth($app_id)
     {
-        $app = PodioAppAuth::whereAppId($app_id)->first();
+        $app = AppAuth::whereAppId($app_id)->first();
         if ($app) {
             self::podioSetup();
             return \Podio::authenticate_with_app($app->app_id, $app->app_secret);

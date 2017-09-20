@@ -3,7 +3,7 @@
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreatePodioAppAuthsTable extends Migration
+class CreateAppAuth extends Migration
 {
     /**
      * Run the migrations.
@@ -12,7 +12,7 @@ class CreatePodioAppAuthsTable extends Migration
      */
     public function up()
     {
-        Schema::create('podio_app_auths', function (Blueprint $table) {
+        Schema::create('app_auth', function (Blueprint $table) {
             $table->increments('id');
             $table->string('app_name');
             $table->integer('app_id')->unique();
@@ -28,6 +28,6 @@ class CreatePodioAppAuthsTable extends Migration
      */
     public function down()
     {
-        Schema::drop('podio_app_auths');
+        Schema::drop('app_auth');
     }
 }

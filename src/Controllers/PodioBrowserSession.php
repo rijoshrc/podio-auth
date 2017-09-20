@@ -6,10 +6,8 @@
  * Time: 12:13 PM
  */
 
-namespace PodioAuth\Controllers;
+namespace App\Http\Controllers;
 
-
-use App\Http\Controllers\Controller;
 
 class PodioBrowserSession extends Controller
 {

@@ -1,11 +1,11 @@
 <?php
 
-namespace PodioAuth\Repositories;
+namespace App\Modules\Repo;
 
+use App\Api;
+use App\AppAuth;
+use App\Http\Controllers\PodioAuth;
 use Illuminate\Support\Facades\Log;
-use PodioAuth\Controllers\PodioAuth;
-use PodioAuth\Models\PodioApi;
-use PodioAuth\Models\PodioAppAuth;
 
 /**
  * Podio rest functions and rate limit handling are defined.
@@ -38,11 +38,11 @@ class Podio
      */
     public static function switch_api()
     {
-        $currentApi = PodioApi::whereCurrent(1)->first();
+        $currentApi = Api::whereCurrent(1)->first();
         $currentApi->current = 0;
         $currentApi->save();
 
-        $api = PodioApi::orderBy('updated_at', 'asc')
+        $api = Api::orderBy('updated_at', 'asc')
             ->where('current', '!=', 1)->first();
         $api->current = 1;
         $api->save();
@@ -60,10 +60,10 @@ class Podio
         $authType = \Podio::$auth_type;
         switch ($authType['type']) {
             case 'app':
-                $appAuth = PodioAppAuth::whereAppId($authType['identifier'])->first();
+                $appAuth = AppAuth::whereAppId($authType['identifier'])->first();
                 Log::info('RE AUTHENTICATE WITH APP:' . $appAuth->app_name);
                 if ($appAuth) {
-                    PodioAuth::podioAppAuthWithName($appAuth->app_name);
+                    PodioAuth::podioAppAuth($appAuth->app_name);
                 }
                 break;
             default:
@@ -278,6 +278,105 @@ class Podio
             self::rate_limit_check();
             return \Podio::post("/search/app/{$app_id}/", $attributes)->json_body();
         } catch (\Exception $exception) {
+            Log::info($exception);
+        }
+    }
+
+    /**
+     * Get Podio file using file id.
+     * @param $file_id - Podio file id.
+     * @return mixed - Podio file data.
+     */
+    public static function PodioFile_get($file_id)
+    {
+        try {
+            self::rate_limit_check();
+            return \PodioFile::get($file_id);
+        } catch (\Exception $exception) {
+            Log::info($exception);
+        }
+    }
+
+    /**
+     * Get Podio comments from an object.
+     * @param $type
+     * @param $id
+     * @return mixed
+     */
+    public static function PodioComment_get_for($type, $id)
+    {
+        try {
+            self::rate_limit_check();
+            return \Podio::get("/comment/{$type}/{$id}/")->json_body();
+        } catch (\Exception $exception) {
+            Log::info($exception);
+        }
+    }
+
+    /**
+     * Get single comment from comment id
+     * @param $comment_id
+     * @return mixed
+     */
+    public static function PodioComment_get($comment_id)
+    {
+        try {
+            self::rate_limit_check();
+            return \Podio::get("/comment/{$comment_id}")->json_body();
+        } catch (\Exception $exception) {
+            Log::info($exception);
+        }
+    }
+
+    public static function PodioComment_create($type, $id, $attributes, $option = [])
+    {
+        try {
+            self::rate_limit_check();
+            return \Podio::post("/comment/{$type}/{$id}/", $attributes)->json_body();
+        } catch (\Exception $exception) {
+            Log::info($exception);
+        }
+    }
+
+    public static function PodioItem_create($app_id, $attributes = [], $options = [])
+    {
+        try {
+            self::rate_limit_check();
+            return \Podio::post("/item/app/{$app_id}/", $attributes, $options)->json_body();
+        } catch (\Exception $exception) {
+            Log::info($exception);
+        }
+    }
+
+    /**
+     * Upload a file into Podio, return File Id
+     * @param $filePath
+     * @param $filename
+     * @return mixed
+     */
+    public static function PodioFile_upload($filePath, $filename)
+    {
+        try {
+            self::rate_limit_check();
+            return \PodioFile::upload($filePath, $filename);
+        } catch (\PodioBadRequestError $exception) {
+            Log::info($exception);
+        }
+    }
+
+    /**
+     * Podio item remove.
+     * @param $item_id
+     * @param array $attributes
+     * @param array $options
+     * @return bool
+     */
+    public static function PodioItem_delete($item_id, $attributes = [], $options = [])
+    {
+        try {
+            self::rate_limit_check();
+            return \Podio::delete("/item/{$item_id}", $attributes, $options);
+        } catch (\PodioBadRequestError $exception) {
             Log::info($exception);
         }
     }
