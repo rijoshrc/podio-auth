@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Modules\Repo;
+namespace PodioAuth\Repositories;
 
 use App\Api;
 use App\AppAuth;

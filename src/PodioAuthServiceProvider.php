@@ -30,14 +30,14 @@ class PodioAuthServiceProvider extends ServiceProvider
         ], 'config');
 
 
-        $this->publishes([
-            __DIR__ . '/Controllers' => app_path() . '/Http/Controllers',
-        ], 'config');
-
-
-        $this->publishes([
-            __DIR__ . '/Repositories' => app_path() . '/Modules/Repo',
-        ], 'config');
+//        $this->publishes([
+//            __DIR__ . '/Controllers' => app_path() . '/Http/Controllers',
+//        ], 'config');
+//
+//
+//        $this->publishes([
+//            __DIR__ . '/Repositories' => app_path() . '/Modules/Repo',
+//        ], 'config');
     }
 
     /**
@@ -51,20 +51,20 @@ class PodioAuthServiceProvider extends ServiceProvider
          * Include PodioAuth controller
          * Contains username-password and app authentications.
          */
-//        $this->app->make('PodioAuth\Controllers\PodioAuth');
+        $this->app->make('PodioAuth\Controllers\PodioAuth');
 
 
         /**
          * Include the PodioBrowserSession
          */
-//        $this->app->make('PodioAuth\Controllers\PodioBrowserSession');
+        $this->app->make('PodioAuth\Controllers\PodioBrowserSession');
 
 
         /**
          * Include Podio repository.
          * Contain modified Podio functions and rate-limit handling.
          */
-//        $this->app->make('PodioAuth\Repositories\Podio');
+        $this->app->make('PodioAuth\Repositories\Podio');
 
         /**
          * Included commands for syncing Configuration data to DB.

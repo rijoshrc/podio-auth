@@ -6,10 +6,11 @@
  * Time: 1:48 PM
  */
 
-namespace App\Http\Controllers;
+namespace PodioAuth\Controllers;
 
 use App\Api;
 use App\AppAuth;
+use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Log;
 

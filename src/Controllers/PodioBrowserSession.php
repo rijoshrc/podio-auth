@@ -6,7 +6,7 @@
  * Time: 12:13 PM
  */
 
-namespace App\Http\Controllers;
+namespace PodioAuth\Controllers;
 
 
 class PodioBrowserSession extends Controller
@@ -62,3 +62,5 @@ class PodioBrowserSession extends Controller
 
     }
 }
+
+use Illuminate\Routing\Controller;
