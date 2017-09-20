@@ -1,6 +1,7 @@
 {
   "name": "rijosh/podio-auth",
   "description": "Podio authentication including rate-limit controlling",
+  "license": "MIT",
   "authors": [
     {
       "name": "Rijosh",
