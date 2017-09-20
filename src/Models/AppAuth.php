@@ -6,7 +6,7 @@
  * Time: 4:20 PM
  */
 
-namespace App;
+namespace PodioAuth\Models;
 
 
 use Illuminate\Database\Eloquent\Model;
@@ -16,6 +16,6 @@ class AppAuth extends Model
     protected $fillable = [
         'app_id', 'app_secret'
     ];
-    
+
     protected $table = 'app_auth';
 }

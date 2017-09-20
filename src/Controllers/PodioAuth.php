@@ -8,11 +8,11 @@
 
 namespace PodioAuth\Controllers;
 
-use App\Api;
-use App\AppAuth;
-use App\Http\Controllers\Controller;
+use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Log;
+use PodioAuth\Models\Api;
+use PodioAuth\Models\AppAuth;
 
 class PodioAuth extends Controller
 {

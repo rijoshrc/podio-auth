@@ -9,6 +9,8 @@
 namespace PodioAuth\Controllers;
 
 
+use Illuminate\Routing\Controller;
+
 class PodioBrowserSession extends Controller
 {
     /**
@@ -62,5 +64,3 @@ class PodioBrowserSession extends Controller
 
     }
 }
-
-use Illuminate\Routing\Controller;
