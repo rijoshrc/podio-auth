@@ -29,6 +29,6 @@ class CreateApi extends Migration
      */
     public function down()
     {
-        Schema::drop('app_auth');
+        Schema::dropIfExists('app_auth');
     }
 }
