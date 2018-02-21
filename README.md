@@ -102,6 +102,56 @@ Use package library for authentication and Podio API
  }
 ```
 
+## Using hook management module
+
+The following urls can be used to manage Podio hooks.
+
+* `hook/create` : Add hooks to all Podio apps listed in the config file.
+* `hook/remove` : Remove all hooks added from the application independent of the entries created in `podio_hooks` table.
+* `hook/disable` : Remove all hooks from Podio apps that listed in the `podio_hooks` table.
+* `cron/hook` : Use this url as a cron job. It will check for inactive hooks in apps and enable them.
+
+After adding the hooks, make sure all hooks are verified. The hook url will be `handle/{app_id}/hook`. All the hooks from Podio will be entered into the `podio_requests` table and trigger the hook processing url. This will help to process hooks asynchronously. Follow the steps add hook processing.
+* Create new controller and extend `PodioAuth\Controllers\HookController`.
+* Add function to process the hooks.
+```
+    public function processHook($id) // table row id
+    {
+        $request = PodioRequest::whereId($id)->first(); 
+        if ($request) {
+            $appId = $request->app_id;
+            $hook = $request->request;
+
+             
+            /**
+            * Start processing hook.
+            */
+            $request->is_processing = 1;
+            $request->save();
+
+
+            /**
+            * Your code
+            */
+
+
+            /**
+            * Finished processing hook.
+            */
+            $request->is_processing = 0;
+            $request->is_processed = 1;
+            $request->save();
+        }
+    }
+```
+* Add route for this function with name `process_hook` and method as `get`.
+```
+Route::get('process/{id}/hook', 'HookController@processHook')->name('process_hook');
+```
+
+####Note
+All the functionalities are working depending on the configuration data in the `podio.php` config file. Make sure `app_auth` and `client_api` are correctly synced to corresponding tables in database.
+
 ## Contributing
 
 Contributions to Podio Auth library are welcome.
