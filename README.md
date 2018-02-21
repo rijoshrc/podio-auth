@@ -149,7 +149,7 @@ After adding the hooks, make sure all hooks are verified. The hook url will be `
 Route::get('process/{id}/hook', 'HookController@processHook')->name('process_hook');
 ```
 
-###Note
+## Note
 All the functionalities are working depending on the configuration data in the `podio.php` config file. Make sure `app_auth` and `client_api` are correctly synced to corresponding tables in database.
 
 ## Contributing
