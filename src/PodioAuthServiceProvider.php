@@ -20,24 +20,14 @@ class PodioAuthServiceProvider extends ServiceProvider
          * Publish migrations
          */
         $this->publishes([
+            __DIR__ . '/Models' => app_path()
+        ]);
+
+
+        $this->publishes([
             __DIR__ . '/migrations' => database_path() . '/migrations'
         ], 'migrations');
-        /**
-         * Publish config file
-         */
-        $this->publishes([
-            __DIR__ . '/config' => config_path(),
-        ], 'config');
 
-
-//        $this->publishes([
-//            __DIR__ . '/Controllers' => app_path() . '/Http/Controllers',
-//        ], 'config');
-//
-//
-//        $this->publishes([
-//            __DIR__ . '/Repositories' => app_path() . '/Modules/Repo',
-//        ], 'config');
     }
 
     /**
@@ -58,6 +48,7 @@ class PodioAuthServiceProvider extends ServiceProvider
          * Include the PodioBrowserSession
          */
         $this->app->make('PodioAuth\Controllers\PodioBrowserSession');
+        $this->app->make('PodioAuth\Controllers\HookController');
 
 
         /**

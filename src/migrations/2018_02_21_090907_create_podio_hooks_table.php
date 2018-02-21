@@ -14,6 +14,11 @@ class CreatePodioHooksTable extends Migration
     {
         Schema::create('podio_hooks', function (Blueprint $table) {
             $table->increments('id');
+            $table->integer('ref_id');
+            $table->string('ref_type')->nullable();
+            $table->integer('hook_id')->nullable();
+            $table->string('type')->nullable();
+            $table->string('url')->nullable();
             $table->timestamps();
         });
     }

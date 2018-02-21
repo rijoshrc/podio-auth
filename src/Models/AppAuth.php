@@ -6,7 +6,7 @@
  * Time: 4:20 PM
  */
 
-namespace PodioAuth\Models;
+namespace App;
 
 
 use Illuminate\Database\Eloquent\Model;

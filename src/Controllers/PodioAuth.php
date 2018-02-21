@@ -9,10 +9,9 @@
 namespace PodioAuth\Controllers;
 
 use Illuminate\Routing\Controller;
-use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Log;
-use PodioAuth\Models\Api;
-use PodioAuth\Models\AppAuth;
+use App\Api;
+use App\AppAuth;
 
 class PodioAuth extends Controller
 {
@@ -22,16 +21,26 @@ class PodioAuth extends Controller
      */
     public static function podioUserAuth()
     {
-        self::podioSetup();
-        $client = Api::whereCurrent(1)->first();
-        if ($client->refresh_token) {
-            Log::info("AUTHENTICATE WITH REFRESH TOKEN: " . $client->id);
-            return \Podio::authenticate('refresh_token', array('refresh_token' => $client->refresh_token));
-        } else {
-            Log::info("RE AUTHENTICATE WITH PASSWORD");
-            $auth = \Podio::authenticate_with_password(Config::get('podio.username'), Config::get('podio.password'));
+        try {
+            self::podioSetup();
+            $client = Api::whereCurrent(1)->first();
+            if ($client->refresh_token) {
+                Log::info("AUTHENTICATE WITH REFRESH TOKEN: " . $client->id);
+                return \Podio::authenticate('refresh_token', array('refresh_token' => $client->refresh_token));
+            } else {
+                Log::info("RE AUTHENTICATE WITH PASSWORD");
+                $auth = \Podio::authenticate_with_password(config('podio.username'), config('podio.password'));
+                $client->refresh_token = \Podio::$oauth->refresh_token;
+                $client->save();
+                return $auth;
+            }
+        } catch (\Exception $e) {
+            self::podioSetup();
+            $client = Api::whereCurrent(1)->first();
+            $auth = \Podio::authenticate_with_password(config('podio.username'), config('podio.password'));
             $client->refresh_token = \Podio::$oauth->refresh_token;
             $client->save();
+            log::error($e);
             return $auth;
         }
     }

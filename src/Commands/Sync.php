@@ -4,8 +4,8 @@ namespace PodioAuth\Commands;
 
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Config;
-use PodioAuth\Models\Api;
-use PodioAuth\Models\AppAuth;
+use App\Api;
+use App\AppAuth;
 
 class Sync extends Command
 {
@@ -42,8 +42,8 @@ class Sync extends Command
          * Sync app configs to database.
          */
         $this->comment("Syncing APIs");
-        $this->output->progressStart(count(Config::get('podio.app_auth')));
-        foreach (Config::get('podio.app_auth') as $name => $app) {
+        $this->output->progressStart(count(config('podio.app_auth')));
+        foreach (config('podio.app_auth') as $name => $app) {
             $appAuth = AppAuth::firstOrCreate(['app_id' => $app['app_id']]);
             $appAuth->app_name = $name;
             $appAuth->app_secret = $app['app_secret'];
@@ -57,7 +57,7 @@ class Sync extends Command
          * Sync client APIs to database.
          */
         $this->output->progressStart(count(Config::get('podio.client_api')));
-        foreach (Config::get('podio.client_api') as $client) {
+        foreach (config('podio.client_api') as $client) {
             $api = Api::firstOrCreate(['client_id' => $client['id']]);
             $api->client_secret = $client['secret'];
             $api->save();

@@ -1,20 +1,12 @@
 <?php
 /**
  * Created by PhpStorm.
- * User: rijosh
+ * User:
  * Date: 7/7/17
  * Time: 5:42 PM
  */
 
 return [
-    /**
-     * Api keys generated from Account settings.
-     * Include single key pair here.
-     */
-    'client_id' => '',
-    'client_secret' => '',
-
-
     /**
      * Podio username and password
      */
@@ -25,11 +17,16 @@ return [
     /**
      * Include Podio apps using in the application here.
      * This list of apps are using for app authentication.
+     * List the type of hooks needed to included if needed or keep empty.
      */
     'app_auth' => [
         'app_name' => [
             'app_id' => 11,
             'app_secret' => '',
+            'hook_types' => [
+                'item.create',
+                'item.update',
+            ]
         ],
     ],
 

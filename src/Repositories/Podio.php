@@ -4,7 +4,7 @@ namespace PodioAuth\Repositories;
 
 use App\Api;
 use App\AppAuth;
-use App\Http\Controllers\PodioAuth;
+use PodioAuth\Controllers\PodioAuth;
 use Illuminate\Support\Facades\Log;
 
 /**
@@ -379,5 +379,117 @@ class Podio
         } catch (\PodioBadRequestError $exception) {
             Log::info($exception);
         }
+    }
+
+    /**
+     * Get all referenced items.
+     * @param $item_id
+     * @return mixed
+     */
+    public static function PodioItem_get_references($item_id)
+    {
+        try {
+            self::rate_limit_check();
+            return \Podio::get_references("/item/{$item_id}/reference/");
+        } catch (\Exception $exception) {
+            Log::info($exception);
+        }
+    }
+
+    /**
+     * Get hooks added.
+     * @param $ref_type
+     * @param $ref_id
+     * @return mixed
+     */
+    public static function PodioHook_get_for($ref_type, $ref_id)
+    {
+        try {
+            self::rate_limit_check();
+            return \Podio::get("/hook/{$ref_type}/{$ref_id}/")->json_body();
+        } catch (\Exception $exception) {
+            Log::info($exception);
+        }
+    }
+
+    /**
+     * Create workspace
+     * @param array $attributes
+     * @return mixed
+     */
+    public static function PodioSpace_create($attributes = [])
+    {
+        try {
+            self::rate_limit_check();
+            return \Podio::post("/space/", $attributes)->json_body();
+        } catch (\Exception $exception) {
+            Log::info($exception);
+        }
+
+    }
+
+    /**
+     * Delete space
+     * @param $space_id
+     * @return mixed
+     */
+    public static function PodioSpace_delete($space_id)
+    {
+        try {
+            self::rate_limit_check();
+            return \Podio::delete("/space/{$space_id}")->json_body();
+        } catch (\Exception $exception) {
+            Log::info($exception);
+        }
+    }
+
+    /**
+     * Add new user to the space.
+     * @param $space_id
+     * @param array $attributes
+     * @return mixed
+     */
+    public static function PodioSpaceMember_add($space_id, $attributes = [])
+    {
+        try {
+            self::rate_limit_check();
+            return \Podio::post("/space/{$space_id}/member/", $attributes)->json_body();
+        } catch (\Exception $exception) {
+            Log::info($exception);
+        }
+    }
+
+    /**
+     * Install app package to the space.
+     * Create app package in the app market first.
+     * @param $share_id
+     * @param array $attributes
+     * @return mixed
+     */
+    public static function PodioAppMarketShare_install($share_id, $attributes = [])
+    {
+        try {
+            self::rate_limit_check();
+            return \Podio::post("/app_store/{$share_id}/install", $attributes)->json_body();
+        } catch (\Exception $exception) {
+            Log::info($exception);
+        }
+    }
+
+    /**
+     * Get all hooks
+     * @param $ref_type
+     * @param $ref_id
+     * @return mixed
+     */
+    public static function Hooks_get_hooks($ref_type, $ref_id)
+    {
+        try {
+            self::rate_limit_check();
+            return \Podio::get("/hook/{$ref_type}/{$ref_id}/")->json_body();
+        } catch (\Exception $exception) {
+            Log::info($exception);
+        }
+
     }
 }

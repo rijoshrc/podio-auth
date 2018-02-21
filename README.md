@@ -4,7 +4,9 @@ Laravel-Podio library which includes
 * [Username and password flow](https://developers.podio.com/authentication/username_password)
 * [App authentication flow](https://developers.podio.com/authentication/app_auth)
 * Podio API library
-* Podio rate-limit
+* Podio rate-limit handling
+* Podio app hook handling
+
 
 
 
@@ -27,12 +29,51 @@ Laravel-Podio library which includes
    ```
    php artisan vendor:publish
    ``` 
-   This will create `podio.php` file in `config` directory.
-4. Update `podio.php` with configuration data.
-5. Run the following commands    
+   This will generate migrations required for the package.
+   
+4. Create config file `podio.php` and add the following code:
+   ```
+   return [
+       /**
+        * Podio username and password.
+        * This will be using for user authentication (Username and password flow).
+        */
+       'username' => '',
+       'password' => '',
+   
+   
+       /**
+        * Include Podio apps details here.
+        * This will be using for app authentication (App authentication flow).
+        * List the type of hooks if needed.
+        */
+       'app_auth' => [
+           'app_name' => [
+               'app_id' =>,
+               'app_secret' => '',
+               'hook_types' => []
+           ],
+       ],
+   
+   
+       /**
+        * Include multiple API Keys here.
+        * This is using for rate-limit handling.
+        */
+       'client_api' => [
+           [
+               'id' => '',
+               'secret' => '',
+           ],
+       ]
+   ];
+   ```
+5. Update `podio.php` with configuration data.
+6. Run the following commands    
    ```
    * php artisan migrate
    * php artisan sync:api
+   
    ``` 
 
 

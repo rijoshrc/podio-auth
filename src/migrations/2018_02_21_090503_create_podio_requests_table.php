@@ -14,6 +14,10 @@ class CreatePodioRequestsTable extends Migration
     {
         Schema::create('podio_requests', function (Blueprint $table) {
             $table->increments('id');
+            $table->text("request")->nullable();
+            $table->integer("app_id")->nullable();
+            $table->integer("is_processed")->default(0);
+            $table->integer("is_processing")->default(0);
             $table->timestamps();
         });
     }
