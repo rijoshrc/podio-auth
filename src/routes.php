@@ -3,9 +3,9 @@
 Route::get('podio/auth', function () {
     echo 'Podio authentication';
 });
-Route::get('hook/create', 'HookController@getCreate');
-Route::get('hook/remove', 'HookController@getRemove');
-Route::get('hook/disable', 'HookController@getDisable');
-Route::post('handle/{app_id}/hook', 'HookController@podioHookHandle')->name("hook");
-Route::get('cron/hook', 'HookController@checkExistingHooks')->name("hook_cron");
-//Route::get('process/{id}/hook', 'HookController@processHook')->name('process_hook');
+Route::get('hook/create', 'PodioAuth\Controllers\HookController@getCreate');
+Route::get('hook/remove', 'PodioAuth\Controllers\HookController@getRemove');
+Route::get('hook/disable', 'PodioAuth\Controllers\HookController@getDisable');
+Route::post('handle/{app_id}/hook', 'PodioAuth\Controllers\HookController@podioHookHandle')->name("hook");
+Route::get('cron/hook', 'PodioAuth\Controllers\HookController@checkExistingHooks')->name("hook_cron");
+//Route::get('process/{id}/hook', 'PodioAuth\Controllers\HookController@processHook')->name('process_hook');
