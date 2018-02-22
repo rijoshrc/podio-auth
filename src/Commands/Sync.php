@@ -3,9 +3,10 @@
 namespace PodioAuth\Commands;
 
 use Illuminate\Console\Command;
+use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Config;
-use App\Api;
-use App\AppAuth;
+use PodioAuth\Models\Api;
+use PodioAuth\Models\AppAuth;
 
 class Sync extends Command
 {
@@ -14,7 +15,7 @@ class Sync extends Command
      *
      * @var string
      */
-    protected $signature = 'sync:api';
+    protected $signature = 'podio:init';
 
     /**
      * The console command description.
@@ -38,6 +39,11 @@ class Sync extends Command
      */
     public function handle()
     {
+
+        $this->comment("Start migration");
+        Artisan::call('migrate', array('--path' => 'vendor/rijosh/podio-auth/src/migrations', '--force' => true));
+        $this->info("Migration finished");
+
         /**
          * Sync app configs to database.
          */

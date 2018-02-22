@@ -1,6 +1,6 @@
 <?php
 
-namespace App;
+namespace PodioAuth\Models;
 
 use Illuminate\Database\Eloquent\Model;
 

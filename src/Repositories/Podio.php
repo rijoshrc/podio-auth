@@ -2,10 +2,11 @@
 
 namespace PodioAuth\Repositories;
 
-use App\Api;
-use App\AppAuth;
+
 use PodioAuth\Controllers\PodioAuth;
 use Illuminate\Support\Facades\Log;
+use PodioAuth\Models\Api;
+use PodioAuth\Models\AppAuth;
 
 /**
  * Podio rest functions and rate limit handling are defined.
@@ -63,7 +64,7 @@ class Podio
                 $appAuth = AppAuth::whereAppId($authType['identifier'])->first();
                 Log::info('RE AUTHENTICATE WITH APP:' . $appAuth->app_name);
                 if ($appAuth) {
-                    PodioAuth::podioAppAuth($appAuth->app_name);
+                    PodioAuth::podioAppAuth($appAuth->app_id);
                 }
                 break;
             default:

@@ -10,11 +10,11 @@ namespace PodioAuth\Controllers;
 
 
 use App\Http\Controllers\Controller;
-use App\PodioHook;
-use App\PodioRequest;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\URL;
+use PodioAuth\Models\PodioHook;
+use PodioAuth\Models\PodioRequest;
 use PodioAuth\Repositories\Podio;
 
 class HookController extends Controller

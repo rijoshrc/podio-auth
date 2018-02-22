@@ -16,17 +16,17 @@ class PodioAuthServiceProvider extends ServiceProvider
     {
         include __DIR__ . '/routes.php';
 
-        /**
-         * Publish migrations
-         */
-        $this->publishes([
-            __DIR__ . '/Models' => app_path()
-        ]);
-
-
-        $this->publishes([
-            __DIR__ . '/migrations' => database_path() . '/migrations'
-        ], 'migrations');
+//        /**
+//         * Publish migrations
+//         */
+//        $this->publishes([
+//            __DIR__ . '/Models' => app_path()
+//        ]);
+//
+//
+//        $this->publishes([
+//            __DIR__ . '/migrations' => database_path() . '/migrations'
+//        ], 'migrations');
 
     }
 
@@ -38,31 +38,34 @@ class PodioAuthServiceProvider extends ServiceProvider
     public function register()
     {
         /**
-         * Include PodioAuth controller
-         * Contains username-password and app authentications.
+         * Register controllers.
          */
         $this->app->make('PodioAuth\Controllers\PodioAuth');
-
-
-        /**
-         * Include the PodioBrowserSession
-         */
         $this->app->make('PodioAuth\Controllers\PodioBrowserSession');
         $this->app->make('PodioAuth\Controllers\HookController');
 
 
         /**
-         * Include Podio repository.
-         * Contain modified Podio functions and rate-limit handling.
+         * Register repositories.
+         * The Podio.php repo include Podio api with rate-limit handling.
          */
         $this->app->make('PodioAuth\Repositories\Podio');
 
         /**
-         * Included commands for syncing Configuration data to DB.
+         * Register console commands.
          * @command: php artisan sync:api
          */
         $this->commands([
             Sync::class
         ]);
+
+        /**
+         * Include models without publishing them.
+         */
+        $this->app->make('PodioAuth\Models\Api');
+        $this->app->make('PodioAuth\Models\AppAuth');
+        $this->app->make('PodioAuth\Models\PodioHook');
+        $this->app->make('PodioAuth\Models\PodioRequest');
+
     }
 }
