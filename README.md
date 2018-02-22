@@ -111,7 +111,7 @@ The following urls can be used to manage Podio hooks.
 * `hook/disable` : Remove all hooks from Podio apps that listed in the `podio_hooks` table.
 * `cron/hook` : Use this url as a cron job. It will check for inactive hooks in apps and enable them.
 
-After adding the hooks, make sure all hooks are verified. The hook url will be `handle/{app_id}/hook`. All the hooks from Podio will be entered into the `podio_requests` table and trigger the hook processing url. This will help to process hooks asynchronously. Follow the steps add hook processing.
+After adding the hooks, make sure all hooks are verified. The hook url will be `handle/{app_id}/hook`. All the hooks from Podio will be entered into the `podio_requests` table and trigger the hook processing url. This will help to process hooks asynchronously. Follow the steps to continue with the hook processing.
 * Create new controller and extend `PodioAuth\Controllers\HookController`.
 * Add function to process the hooks.
 ```
@@ -150,7 +150,7 @@ Route::get('process/{id}/hook', 'HookController@processHook')->name('process_hoo
 ```
 
 ## Note
-All the functionalities are working depending on the configuration data in the `podio.php` config file. Make sure `app_auth` and `client_api` are correctly synced to corresponding tables in database.
+All the functionalities are working depending on the configuration data in the `podio.php` file. Make sure `app_auth` and `client_api` are correctly synced to corresponding tables in database. Clear the configuration cache by running the command `php artisan config:cache`.
 
 ## Contributing
 
