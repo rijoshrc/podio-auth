@@ -25,13 +25,8 @@ Laravel-Podio library which includes
    ```
    PodioAuth\PodioAuthServiceProvider::class
    ``` 
-3. run `publish` command
-   ```
-   php artisan vendor:publish
-   ``` 
-   This will generate migrations required for the package.
    
-4. Create config file `podio.php` and add the following code:
+3. Create config file `podio.php` and add the following code:
    ```
    return [
        /**
@@ -71,10 +66,10 @@ Laravel-Podio library which includes
 5. Update `podio.php` with configuration data.
 6. Run the following commands    
    ```
-   * php artisan migrate
-   * php artisan sync:api
+   * php artisan podio:init
    
-   ``` 
+   ```
+   This will generate the required tables and sync the api from config. 
 
 
 ## Code Examples
