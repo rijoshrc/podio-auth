@@ -14,7 +14,7 @@ use Illuminate\Database\Eloquent\Model;
 class AppAuth extends Model
 {
     protected $fillable = [
-        'app_id', 'app_secret'
+        'app_id', 'app_secret','app_name'
     ];
 
     protected $table = 'app_auth';

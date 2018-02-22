@@ -14,9 +14,9 @@ class CreateAppAuth extends Migration
     {
         Schema::create('app_auth', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('app_name');
+            $table->string('app_name')->nullable();
             $table->integer('app_id')->unique();
-            $table->string('app_secret');
+            $table->string('app_secret')->nullable();
             $table->timestamps();
         });
     }
