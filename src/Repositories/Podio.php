@@ -26,6 +26,7 @@ class Podio
     public static function rate_limit_check()
     {
         $remaining = \Podio::rate_limit_remaining();
+        Log::info('RATE LIMIT:' . $remaining);
         if ($remaining < self::limit) {
             Log::info('LIMIT REACHED; SWITCHING');
             // Switch api

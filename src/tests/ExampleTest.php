@@ -11,15 +11,15 @@ class ExampleTest extends PHPUnit_Framework_TestCase
      *
      * @return void
      */
-    public function testBasicExample()
-    {
-        $this->assertTrue(true);
-    }
-
-    public function testPodioAuth()
-    {
-         $rest = \PodioAuth\Controllers\PodioAuth::podioUserAuth();
-         $this->assertNull($rest);
-
-    }
+//    public function testBasicExample()
+//    {
+//        $this->assertTrue(true);
+//    }
+//
+//    public function testPodioAuth()
+//    {
+//         $rest = \PodioAuth\Controllers\PodioAuth::podioUserAuth();
+////         $this->assertNull($rest);
+////
+//    }
 }
