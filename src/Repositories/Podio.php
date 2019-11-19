@@ -3,6 +3,7 @@
 namespace PodioAuth\Repositories;
 
 
+use Illuminate\Support\Facades\DB;
 use PodioAuth\Controllers\PodioAuth;
 use Illuminate\Support\Facades\Log;
 use PodioAuth\Models\Api;
@@ -40,6 +41,18 @@ class Podio
      */
     public static function switch_api()
     {
+        // lock table from writing by another job
+        DB::raw('LOCK TABLES api WRITE');
+        // check if active api are present
+        if (Api::whereCurrent(1)->count() > 1) {
+            $firstDuplicatedEntry = Api::orderBy('updated_at', 'asc')
+                ->where('current', 1)->first();
+            Api::where('current', 1)->update(['current' => 0]);
+            $firstDuplicatedEntry = $firstDuplicatedEntry->fresh();
+            $firstDuplicatedEntry->current = 1;
+            $firstDuplicatedEntry->save();
+        }
+
         $currentApi = Api::whereCurrent(1)->first();
         $currentApi->current = 0;
         $currentApi->save();
@@ -48,6 +61,7 @@ class Podio
             ->where('current', '!=', 1)->first();
         $api->current = 1;
         $api->save();
+        DB::raw('UNLOCK TABLES');
 
         self::reAuth();
     }
